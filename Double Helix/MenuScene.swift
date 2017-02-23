@@ -11,45 +11,40 @@ import GameplayKit
 
 class MenuScene: SKScene {
     
+    var label: SKLabelNode!
     
     override func didMove(to view: SKView) {
-        let screenWidth = Int(self.frame.size.width)
-        let nodeWidth = 100
-        let numNodes = screenWidth/nodeWidth + 2
+        self.backgroundColor = ColorTheme.dark
        
-        let top = Polynucleotide(size: numNodes, top: true)
-        top.position = CGPoint(x: -self.frame.size.width/2 - 100, y: self.frame.size.height/2 - 120)
-        let moveTop = SKAction.move(by: CGVector(dx: 100, dy: 0), duration: 1)
-        let addTop = SKAction.run { top.addFront() }
-        let actionTop = SKAction.repeatForever(SKAction.sequence([moveTop, addTop]))
-        top.run(actionTop)
+        label = SKLabelNode(fontNamed: "Avenir")
+        label.fontSize = 30
+        label.color = ColorTheme.light
+        label.horizontalAlignmentMode = .center
+        label.verticalAlignmentMode = .center
+        label.text = "TAP TO START"
+        label.position = CGPoint(x: frame.width/2, y: frame.height/2)
+        addChild(label)
+        
+        let size = CGSize(width: frame.width, height: frame.height / 4)
+        
+        let top = ScrollingPolynucleotide(size: size, facing: .down, moving: .right)
+        top.position.x = frame.width
+        top.position.y = frame.height - size.height
         addChild(top)
-
-        let bottom = Polynucleotide(size: numNodes, top: false)
-        bottom.position = CGPoint(x: -self.frame.size.width/2, y: -self.frame.size.height/2 + 120)
-        let moveBottom = SKAction.move(by: CGVector(dx: -100, dy: 0), duration: 1)
-        let addBottom = SKAction.run{ bottom.addBack() }
-        let actionBottom = SKAction.repeatForever(SKAction.sequence([moveBottom, addBottom]))
-        bottom.run(actionBottom)
+       
+        let bottom = ScrollingPolynucleotide(size: size, facing: .up, moving: .left)
+        bottom.position.y = size.height
         addChild(bottom)
     }
     
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let view = self.scene?.view {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .aspectFill
-                
-                // Present the scene
-                view.presentScene(scene)
-            }
-            
+        if let view = view {
+            let tutorialViewed = UserDefaults.standard.bool(forKey: "tutorialViewed")
+            let scene = tutorialViewed ? GameScene(size: view.bounds.size) : TutorialScene(size: view.bounds.size)
+            scene.scaleMode = .aspectFit
             view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
+            view.presentScene(scene, transition: .fade(withDuration: 1))
         }
 
     }

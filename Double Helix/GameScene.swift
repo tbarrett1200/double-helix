@@ -1,3 +1,4 @@
+
 //
 //  GameScene.swift
 //  Double Helix
@@ -10,72 +11,131 @@ import Foundation
 import SpriteKit
 
 class GameScene: SKScene {
-    
-    var b1: SKShapeNode!
-    var b2: SKShapeNode!
-    var b3: SKShapeNode!
-    var b4: SKShapeNode!
+    private let maxMutations = 5
 
+    public static var score = 0
+    public static var highScore: Int = 0
+
+    private var dna: DeoxyribonucleicAcid!
+
+    private var scoreLabel: SKLabelNode! = SKLabelNode(fontNamed: "Avenir")
+    private var mutationLabel: SKLabelNode! = SKLabelNode(fontNamed: "Avenir")
+    
+    private var adenine: SKShapeNode! = SKShapeNode(circleOfRadius: 40)
+    private var thymine: SKShapeNode! = SKShapeNode(circleOfRadius: 40)
+    private var cytosine: SKShapeNode! = SKShapeNode(circleOfRadius: 40)
+    private var guanine: SKShapeNode! = SKShapeNode(circleOfRadius: 40)
+    
     override func didMove(to view: SKView) {
+        
+        backgroundColor = ColorTheme.dark
+        
+        GameScene.score = 0
+        GameScene.highScore = UserDefaults.standard.integer(forKey: "highScore")
+        
+        adenine.fillColor = Nucleobase.adenine.color
+        adenine.position = CGPoint(x: 60, y: 60)
+        
+        thymine.fillColor = Nucleobase.thymine.color
+        thymine.position = CGPoint(x: 160, y: 60)
+       
+        cytosine.fillColor = Nucleobase.cytosine.color
+        cytosine.position = CGPoint(x: frame.width - 160, y: 60)
+       
+        guanine.fillColor = Nucleobase.guanine.color
+        guanine.position = CGPoint(x: frame.width - 60, y: 60)
+
+        for b in [adenine!, thymine!, cytosine!, guanine!] {
+            b.strokeColor = b.fillColor
+            b.isAntialiased = true
+            addChild(b)
+        }
+        scoreLabel.fontSize = 36
+        scoreLabel.text = "SCORE: 0"
+        scoreLabel.verticalAlignmentMode = .top
+        scoreLabel.position = CGPoint(x: frame.width/2, y: adenine.frame.maxY - 10)
+        
+        mutationLabel.fontSize = 18
+        mutationLabel.text = "MUTATIONS: 0"
+        mutationLabel.verticalAlignmentMode = .bottom
+        mutationLabel.position = CGPoint(x: frame.width/2, y: adenine.frame.minY + 10)
+        
+        for l in [scoreLabel!, mutationLabel!] {
+            l.color = ColorTheme.light
+            l.horizontalAlignmentMode = .center
+            addChild(l)
+        }
+
+        
         let screenWidth = Int(self.frame.size.width)
         let nodeWidth = 100
-        let numNodes = screenWidth/nodeWidth + 2
-    
+        let numNodes = screenWidth/nodeWidth + 3
         
-        let bottom = Polynucleotide(size: numNodes, top: false)
-        bottom.position = CGPoint(x: -self.frame.size.width/2, y: 30)
-        let moveBottom = SKAction.move(by: CGVector(dx: -100, dy: 0), duration: 1)
-        let addBottom = SKAction.run{ bottom.addBack() }
-        let actionBottom = SKAction.repeatForever(SKAction.sequence([moveBottom, addBottom]))
-        bottom.run(actionBottom)
-        addChild(bottom)
+        dna = DeoxyribonucleicAcid(size: numNodes)
+        dna.position = CGPoint(x: frame.width+50, y: 0.5 * (frame.height - adenine.frame.maxY) + adenine.frame.maxY)
         
-        b1 = SKShapeNode(circleOfRadius: 40)
-        b1.fillColor = Nucleobase.adenine.color()
-        b1.strokeColor = b1.fillColor
-        b1.position = CGPoint(x: -self.frame.width/2 + 60, y: -self.frame.height/2 + 60)
-        b1.isAntialiased = true
-        addChild(b1)
+        let time = Double((frame.width-50) * 0.005)
         
-        b2 = SKShapeNode(circleOfRadius: 40)
-        b2.fillColor = Nucleobase.thymine.color()
-        b2.strokeColor = b2.fillColor
-        b2.position = CGPoint(x: -self.frame.width/2 + 160, y: -self.frame.height/2 + 60)
-        b2.isAntialiased = true
-        addChild(b2)
-
-        b3 = SKShapeNode(circleOfRadius: 40)
-        b3.fillColor = Nucleobase.cytosine.color()
-        b3.strokeColor = b3.fillColor
-        b3.position = CGPoint(x: self.frame.width/2 - 160, y: -self.frame.height/2 + 60)
-        b3.isAntialiased = true
-        addChild(b3)
-
-        b4 = SKShapeNode(circleOfRadius: 40)
-        b4.fillColor = Nucleobase.guanine.color()
-        b4.strokeColor = b4.fillColor
-        b4.position = CGPoint(x: self.frame.width/2 - 60, y: -self.frame.height/2 + 60)
-        b4.isAntialiased = true
-        addChild(b4)
+        let moveDNA = SKAction.move(by: CGVector(dx: -100, dy: 0), duration: 0.5)
+        let addDNA = SKAction.run{
+            self.dna.addBottom();
+            self.dna.removeFront();
+            self.mutationLabel.text = "MUTATIONS: \(self.dna.mutations)"
+            if self.dna.mutations >= self.maxMutations {
+                self.didLoseGame()
+            }
+        }
+        let actionDNA = SKAction.repeatForever(SKAction.sequence([moveDNA, addDNA]))
+        
+        dna.run(SKAction.moveBy(x: -frame.width+150, y: 0, duration: time)) {
+            self.dna.run(actionDNA)
+        }
+        addChild(dna)
     }
     
+    
+    
+    func didLoseGame() {
+        
+        if GameScene.score > GameScene.highScore {
+            GameScene.highScore = GameScene.score
+            UserDefaults.standard.set(GameScene.highScore, forKey: "highScore")
+        }
+        
+        if let view = view {
+            let scene = GameOverScene(size: view.bounds.size)
+            scene.scaleMode = .aspectFit
+            view.ignoresSiblingOrder = true
+            view.presentScene(scene, transition: .fade(withDuration: 1))
+        }
+    }
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch in touches {
-            if b1.frame.contains(touch.location(in: self)) {
-                print(1)
+        
+        guard dna.mutations < maxMutations else { return }
+        
+        var base: Nucleobase? = nil
+        
+        if let touch = touches.first {
+            if adenine.frame.contains(touch.location(in: self)) {
+                base = .adenine
+            } else if thymine.frame.contains(touch.location(in: self)) {
+                base = .thymine
+            } else if cytosine.frame.contains(touch.location(in: self)) {
+                base = .cytosine
+            } else if guanine.frame.contains(touch.location(in: self)) {
+                base = .guanine
             }
-            if b2.frame.contains(touch.location(in: self)) {
-                print(2)
+        }
+        
+        if let newBase = base {
+            if dna.addTop(with: newBase) {
+                GameScene.score += 1
+            }
+            scoreLabel.text = "SCORE: \(GameScene.score)"
+            mutationLabel.text = "MUTATIONS: \(self.dna.mutations)"
 
-            }
-            if b3.frame.contains(touch.location(in: self)) {
-                print(3)
-
-            }
-            if b4.frame.contains(touch.location(in: self)) {
-                print(4)
-
-            }
         }
     }
     

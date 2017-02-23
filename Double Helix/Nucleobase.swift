@@ -9,27 +9,48 @@
 import Foundation
 import UIKit
 
+/**
+ A nitrogenous base that composes DNA
+ */
 enum Nucleobase: Int {
     case adenine = 0
     case thymine = 3
     case cytosine = 1
     case guanine = 2
     
+    /**
+     Creates a new nuclebase of a random type
+     */
     init() {
         let random = Int(arc4random_uniform(4))
         self.init(rawValue: random)!
     }
     
-    func canPair(with base: Nucleobase) -> Bool {
-        return self.rawValue + base.rawValue == 3
+    /**
+     The representative color of the nucleobase. Matching bases have similar hues
+     */
+    var color: UIColor {
+        switch self {
+        case .adenine: return ColorTheme.green
+        case .thymine: return ColorTheme.blue
+        case .guanine: return ColorTheme.yellow
+        case .cytosine: return ColorTheme.red
+        }
+    }
+
+    var complement: Nucleobase {
+        switch self {
+        case .adenine: return .thymine
+        case .thymine: return .adenine
+        case .guanine: return .cytosine
+        case .cytosine: return .guanine
+        }
     }
     
-    func color() -> UIColor {
-        switch self {
-        case .adenine: return UIColor(red: 170/255.0, green: 231/255.0, blue: 208/255.0, alpha: 1)
-        case .thymine: return UIColor(red: 72/255.0, green: 157/255.0, blue: 255/255.0, alpha: 1)
-        case .guanine: return UIColor(red: 212/255.0, green: 224/255.0, blue: 155/255.0, alpha: 1)
-        case .cytosine: return UIColor(red: 255/255.0, green: 166/255.0, blue: 158/255.0, alpha: 1)
-        }
+    /**
+     Returns whether or not the nucleobase can pair with the other specified base
+     */
+    func canPair(with base: Nucleobase) -> Bool {
+        return self.rawValue + base.rawValue == 3
     }
 }
