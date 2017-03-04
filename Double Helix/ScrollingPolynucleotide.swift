@@ -23,6 +23,7 @@ class ScrollingPolynucleotide: SKNode {
     
     private let facing: VerticalDirection
     private let moving: HorizontalDirection
+    
     private var numNucleotides = 0
     
     init(size: CGSize, facing: VerticalDirection, moving: HorizontalDirection) {
@@ -51,7 +52,7 @@ class ScrollingPolynucleotide: SKNode {
     }
     
     private func addRight() {
-        let node = Nucleotide()
+        let node = Nucleotide(alignment: .right)
         node.position.x = CGFloat(numNucleotides) * Nucleotide.size.width
         node.zRotation = facing == .up ? CGFloat.pi : 0
         addChild(node)
@@ -60,7 +61,7 @@ class ScrollingPolynucleotide: SKNode {
     }
     
     private func addLeft() {
-        let node = Nucleotide()
+        let node = Nucleotide(alignment: .right)
         node.position.x = CGFloat(numNucleotides) * -Nucleotide.size.width
         node.zRotation = facing == .up ? CGFloat.pi : 0
         addChild(node)

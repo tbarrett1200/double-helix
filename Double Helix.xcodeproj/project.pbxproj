@@ -24,6 +24,8 @@
 		325F20E61E5B4EA600437394 /* DeoxyribonucleicAcid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20E51E5B4EA600437394 /* DeoxyribonucleicAcid.swift */; };
 		325F20E81E5BB7BD00437394 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20E71E5BB7BD00437394 /* GameOverScene.swift */; };
 		325F20EE1E5C8DD800437394 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20ED1E5C8DD800437394 /* ColorTheme.swift */; };
+		32757EBA1E65C69400491067 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32757EB91E65C69400491067 /* GameKit.framework */; };
+		32C5F08C1E664DAD000278DC /* DNA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5F08B1E664DAD000278DC /* DNA.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +48,8 @@
 		325F20E51E5B4EA600437394 /* DeoxyribonucleicAcid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeoxyribonucleicAcid.swift; sourceTree = "<group>"; };
 		325F20E71E5BB7BD00437394 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		325F20ED1E5C8DD800437394 /* ColorTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
+		32757EB91E65C69400491067 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		32C5F08B1E664DAD000278DC /* DNA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNA.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32757EBA1E65C69400491067 /* GameKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +69,7 @@
 			children = (
 				325F20BE1E5A9A7C00437394 /* Double Helix */,
 				325F20BD1E5A9A7C00437394 /* Products */,
+				32757EB81E65C69400491067 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,6 +85,7 @@
 			isa = PBXGroup;
 			children = (
 				325F20E51E5B4EA600437394 /* DeoxyribonucleicAcid.swift */,
+				32C5F08B1E664DAD000278DC /* DNA.swift */,
 				325F20BF1E5A9A7C00437394 /* AppDelegate.swift */,
 				325F20C51E5A9A7C00437394 /* MenuScene.swift */,
 				325F20E71E5BB7BD00437394 /* GameOverScene.swift */,
@@ -98,6 +105,14 @@
 				325F20D11E5A9A7C00437394 /* Info.plist */,
 			);
 			path = "Double Helix";
+			sourceTree = "<group>";
+		};
+		32757EB81E65C69400491067 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				32757EB91E65C69400491067 /* GameKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,8 +147,13 @@
 				TargetAttributes = {
 					325F20BB1E5A9A7C00437394 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 55523JQQBA;
+						DevelopmentTeam = ZLT9T44FE8;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.GameCenter = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -179,6 +199,7 @@
 				325627B51E5CB60C001F58E7 /* ColorBar.swift in Sources */,
 				325F20C61E5A9A7C00437394 /* MenuScene.swift in Sources */,
 				325F20EE1E5C8DD800437394 /* ColorTheme.swift in Sources */,
+				32C5F08C1E664DAD000278DC /* DNA.swift in Sources */,
 				325F20C81E5A9A7C00437394 /* GameViewController.swift in Sources */,
 				32119ED91E5D1B630033A320 /* UserData.swift in Sources */,
 				325F20C01E5A9A7C00437394 /* AppDelegate.swift in Sources */,
@@ -309,11 +330,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 55523JQQBA;
+				DEVELOPMENT_TEAM = ZLT9T44FE8;
 				INFOPLIST_FILE = "Double Helix/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = DoubleHelix;
+				PRODUCT_BUNDLE_IDENTIFIER = tbarrett.DoubleHelix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -324,11 +345,11 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 55523JQQBA;
+				DEVELOPMENT_TEAM = ZLT9T44FE8;
 				INFOPLIST_FILE = "Double Helix/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = DoubleHelix;
+				PRODUCT_BUNDLE_IDENTIFIER = tbarrett.DoubleHelix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

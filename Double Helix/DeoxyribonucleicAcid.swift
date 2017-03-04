@@ -45,7 +45,7 @@ class DeoxyribonucleicAcid: SKNode {
             mutations += 1
         }
         
-        let node = Nucleotide(base: base, mutated: mutated)
+        let node = Nucleotide(base: base, mutated: mutated, alignment: .center)
         
         top?.addBack(node: node, x: other.position.x)
         

@@ -1,4 +1,5 @@
 
+
 //
 //  GameScene.swift
 //  Double Helix
@@ -9,6 +10,7 @@
 
 import Foundation
 import SpriteKit
+import GameKit
 
 class GameScene: SKScene {
     private let maxMutations = 5
@@ -28,11 +30,14 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         
+        
         backgroundColor = ColorTheme.dark
         
         GameScene.score = 0
         GameScene.highScore = UserDefaults.standard.integer(forKey: "highScore")
         
+        reportScoreToLeaderboard()
+
         adenine.fillColor = Nucleobase.adenine.color
         adenine.position = CGPoint(x: 60, y: 60)
         
@@ -50,7 +55,7 @@ class GameScene: SKScene {
             b.isAntialiased = true
             addChild(b)
         }
-        scoreLabel.fontSize = 36
+        scoreLabel.fontSize = 24
         scoreLabel.text = "SCORE: 0"
         scoreLabel.verticalAlignmentMode = .top
         scoreLabel.position = CGPoint(x: frame.width/2, y: adenine.frame.maxY - 10)
@@ -96,11 +101,12 @@ class GameScene: SKScene {
     
     
     func didLoseGame() {
-        
         if GameScene.score > GameScene.highScore {
             GameScene.highScore = GameScene.score
             UserDefaults.standard.set(GameScene.highScore, forKey: "highScore")
         }
+        
+        reportScoreToLeaderboard()
         
         if let view = view {
             let scene = GameOverScene(size: view.bounds.size)
@@ -109,8 +115,15 @@ class GameScene: SKScene {
             view.presentScene(scene, transition: .fade(withDuration: 1))
         }
     }
-    
-    
+
+    func reportScoreToLeaderboard() {
+        if GKLocalPlayer.localPlayer().isAuthenticated {
+            let score = GKScore(leaderboardIdentifier: "tbarrett1200.doubleHelix.highScore", player: GKLocalPlayer.localPlayer())
+            score.value = Int64(GameScene.highScore)
+            GKScore.report([score], withCompletionHandler: nil)
+        }
+    }
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         guard dna.mutations < maxMutations else { return }

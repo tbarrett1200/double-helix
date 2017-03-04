@@ -11,15 +11,19 @@ import SpriteKit
 
 class GameOverScene: SKScene {
     
+
+    
     var title1 = SKLabelNode(fontNamed: "Avenir")
     var title2 = SKLabelNode(fontNamed: "Avenir")
-    var score = SKLabelNode(fontNamed: "Avenir")
+    var scoreLabel = SKLabelNode(fontNamed: "Avenir")
     var restart = SKLabelNode(fontNamed: "Avenir")
     var tutorial = SKLabelNode(fontNamed: "Avenir")
+    var leaderboard = SKLabelNode(fontNamed: "Avenir")
     var highscore = SKLabelNode(fontNamed: "Avenir")
     var bar: ColorBar!
     
     override func didMove(to view: SKView) {
+        
         self.backgroundColor = UIColor(red: 23/255.0, green: 26/255.0, blue: 33/255.0, alpha: 1)
 
         title1.text = "GENOME REPLICATION"
@@ -37,14 +41,23 @@ class GameOverScene: SKScene {
         addChild(title2)
 
         restart.text = "RESTART"
-        restart.fontSize = 36
+        restart.fontSize = 24
         restart.fontColor = ColorTheme.light
         restart.position.x = restart.frame.width/2 + 20
         restart.position.y = 20
         addChild(restart)
         
+        leaderboard.text = "LEADERBOARD"
+        leaderboard.fontSize = 24
+        leaderboard.horizontalAlignmentMode = .center
+        leaderboard.fontColor = ColorTheme.light
+        leaderboard.position.x = frame.width/2
+        leaderboard.position.y = 20
+        addChild(leaderboard)
+
+        
         tutorial.text = "TUTORIAL"
-        tutorial.fontSize = 36
+        tutorial.fontSize = 24
         tutorial.fontColor = ColorTheme.light
         tutorial.position.x = self.frame.width - tutorial.frame.width/2 - 20
         tutorial.position.y = 20
@@ -54,11 +67,11 @@ class GameOverScene: SKScene {
         bar.position = CGPoint(x: 0, y: restart.frame.maxY + 10)
         addChild(bar)
         
-        score.text = "SCORE: \(GameScene.score)"
-        score.fontSize = 24
-        score.fontColor = ColorTheme.light
-        score.verticalAlignmentMode = .bottom
-        score.position.y = 5
+        scoreLabel.text = "SCORE: \(GameScene.score)"
+        scoreLabel.fontSize = 24
+        scoreLabel.fontColor = ColorTheme.light
+        scoreLabel.verticalAlignmentMode = .bottom
+        scoreLabel.position.y = 5
         
         highscore.text = "BEST: \(GameScene.highScore)"
         highscore.fontSize = 24
@@ -67,7 +80,7 @@ class GameOverScene: SKScene {
         highscore.position.y = -5
         
         let scoreNode = SKNode()
-        scoreNode.addChild(score)
+        scoreNode.addChild(scoreLabel)
         scoreNode.addChild(highscore)
         scoreNode.position.x = frame.width/2
         scoreNode.position.y = bar.frame.maxY + 0.5 * (title2.frame.minY - bar.frame.maxY)
@@ -75,6 +88,7 @@ class GameOverScene: SKScene {
 
     }
     
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let touch = touches.first {
             if restart.contains(touch.location(in: self)) {
@@ -91,6 +105,8 @@ class GameOverScene: SKScene {
                     view.ignoresSiblingOrder = true
                     view.presentScene(scene, transition: .fade(withDuration: 1))
                 }
+            } else if leaderboard.contains(touch.location(in: self)) {
+                GameViewController.controller?.showLeader()
             }
         }
     }

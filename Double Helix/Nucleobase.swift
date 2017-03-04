@@ -12,18 +12,20 @@ import UIKit
 /**
  A nitrogenous base that composes DNA
  */
-enum Nucleobase: Int {
-    case adenine = 0
-    case thymine = 3
-    case cytosine = 1
-    case guanine = 2
+enum Nucleobase {
+    case adenine, thymine, cytosine, guanine
     
     /**
      Creates a new nuclebase of a random type
      */
     init() {
         let random = Int(arc4random_uniform(4))
-        self.init(rawValue: random)!
+        switch random {
+        case 0: self = .adenine
+        case 1: self = .thymine
+        case 2: self = .guanine
+        default: self = .cytosine
+        }
     }
     
     /**
@@ -38,6 +40,9 @@ enum Nucleobase: Int {
         }
     }
 
+    /**
+     Returns the complementary base type
+     */
     var complement: Nucleobase {
         switch self {
         case .adenine: return .thymine
@@ -51,6 +56,6 @@ enum Nucleobase: Int {
      Returns whether or not the nucleobase can pair with the other specified base
      */
     func canPair(with base: Nucleobase) -> Bool {
-        return self.rawValue + base.rawValue == 3
+        return self.complement == base
     }
 }
