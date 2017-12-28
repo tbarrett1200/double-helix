@@ -55,7 +55,8 @@ enum Nucleobase {
     /**
      Returns whether or not the nucleobase can pair with the other specified base
      */
-    func canPair(with base: Nucleobase) -> Bool {
+    func canPair(with base: Nucleobase?) -> Bool {
+        print("\(self) \(base)")
         return self.complement == base
     }
 }

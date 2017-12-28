@@ -21,10 +21,10 @@
 		325F20DA1E5AA08400437394 /* Nucleotide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20D91E5AA08400437394 /* Nucleotide.swift */; };
 		325F20DC1E5AA6FF00437394 /* Polynucleotide.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20DB1E5AA6FF00437394 /* Polynucleotide.swift */; };
 		325F20DE1E5AB29A00437394 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20DD1E5AB29A00437394 /* GameScene.swift */; };
-		325F20E61E5B4EA600437394 /* DeoxyribonucleicAcid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20E51E5B4EA600437394 /* DeoxyribonucleicAcid.swift */; };
 		325F20E81E5BB7BD00437394 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20E71E5BB7BD00437394 /* GameOverScene.swift */; };
 		325F20EE1E5C8DD800437394 /* ColorTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 325F20ED1E5C8DD800437394 /* ColorTheme.swift */; };
 		32757EBA1E65C69400491067 /* GameKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 32757EB91E65C69400491067 /* GameKit.framework */; };
+		329A81351E6A54FF0031884C /* DeoxyribonucleicAcid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329A81341E6A54FF0031884C /* DeoxyribonucleicAcid.swift */; };
 		32C5F08C1E664DAD000278DC /* DNA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32C5F08B1E664DAD000278DC /* DNA.swift */; };
 /* End PBXBuildFile section */
 
@@ -45,10 +45,10 @@
 		325F20D91E5AA08400437394 /* Nucleotide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Nucleotide.swift; sourceTree = "<group>"; };
 		325F20DB1E5AA6FF00437394 /* Polynucleotide.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Polynucleotide.swift; sourceTree = "<group>"; };
 		325F20DD1E5AB29A00437394 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
-		325F20E51E5B4EA600437394 /* DeoxyribonucleicAcid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeoxyribonucleicAcid.swift; sourceTree = "<group>"; };
 		325F20E71E5BB7BD00437394 /* GameOverScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		325F20ED1E5C8DD800437394 /* ColorTheme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorTheme.swift; sourceTree = "<group>"; };
 		32757EB91E65C69400491067 /* GameKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameKit.framework; path = System/Library/Frameworks/GameKit.framework; sourceTree = SDKROOT; };
+		329A81341E6A54FF0031884C /* DeoxyribonucleicAcid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeoxyribonucleicAcid.swift; sourceTree = "<group>"; };
 		32C5F08B1E664DAD000278DC /* DNA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DNA.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,7 +84,7 @@
 		325F20BE1E5A9A7C00437394 /* Double Helix */ = {
 			isa = PBXGroup;
 			children = (
-				325F20E51E5B4EA600437394 /* DeoxyribonucleicAcid.swift */,
+				329A81341E6A54FF0031884C /* DeoxyribonucleicAcid.swift */,
 				32C5F08B1E664DAD000278DC /* DNA.swift */,
 				325F20BF1E5A9A7C00437394 /* AppDelegate.swift */,
 				325F20C51E5A9A7C00437394 /* MenuScene.swift */,
@@ -205,7 +205,7 @@
 				325F20C01E5A9A7C00437394 /* AppDelegate.swift in Sources */,
 				325F20DE1E5AB29A00437394 /* GameScene.swift in Sources */,
 				32119EDD1E5F2F530033A320 /* TutorialScene.swift in Sources */,
-				325F20E61E5B4EA600437394 /* DeoxyribonucleicAcid.swift in Sources */,
+				329A81351E6A54FF0031884C /* DeoxyribonucleicAcid.swift in Sources */,
 				325F20E81E5BB7BD00437394 /* GameOverScene.swift in Sources */,
 				325F20DA1E5AA08400437394 /* Nucleotide.swift in Sources */,
 			);

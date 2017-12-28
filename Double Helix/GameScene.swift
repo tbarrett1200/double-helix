@@ -15,10 +15,10 @@ import GameKit
 class GameScene: SKScene {
     private let maxMutations = 5
 
-    public static var score = 0
+    public static var score = 0 
     public static var highScore: Int = 0
 
-    private var dna: DeoxyribonucleicAcid!
+    private var dna: DNA!
 
     private var scoreLabel: SKLabelNode! = SKLabelNode(fontNamed: "Avenir")
     private var mutationLabel: SKLabelNode! = SKLabelNode(fontNamed: "Avenir")
@@ -70,31 +70,9 @@ class GameScene: SKScene {
             l.horizontalAlignmentMode = .center
             addChild(l)
         }
-
-        
-        let screenWidth = Int(self.frame.size.width)
-        let nodeWidth = 100
-        let numNodes = screenWidth/nodeWidth + 3
-        
-        dna = DeoxyribonucleicAcid(size: numNodes)
-        dna.position = CGPoint(x: frame.width+50, y: 0.5 * (frame.height - adenine.frame.maxY) + adenine.frame.maxY)
-        
-        let time = Double((frame.width-50) * 0.005)
-        
-        let moveDNA = SKAction.move(by: CGVector(dx: -100, dy: 0), duration: 0.5)
-        let addDNA = SKAction.run{
-            self.dna.addBottom();
-            self.dna.removeFront();
-            self.mutationLabel.text = "MUTATIONS: \(self.dna.mutations)"
-            if self.dna.mutations >= self.maxMutations {
-                self.didLoseGame()
-            }
-        }
-        let actionDNA = SKAction.repeatForever(SKAction.sequence([moveDNA, addDNA]))
-        
-        dna.run(SKAction.moveBy(x: -frame.width+150, y: 0, duration: time)) {
-            self.dna.run(actionDNA)
-        }
+ 
+        dna = DNA(size: CGSize(width:frame.size.width, height: frame.size.height/2))
+        dna.position = CGPoint(x: frame.width, y: 0.5 * (frame.height - adenine.frame.maxY) + adenine.frame.maxY)
         addChild(dna)
     }
     
@@ -124,10 +102,18 @@ class GameScene: SKScene {
         }
     }
 
+    func mutationsChanged() {
+        mutationLabel.text = "MUTATIONS: \(self.dna.mutations)"
+        if dna.mutations == dna.maxMutations {
+            didLoseGame()
+        }
+    }
+    
+    func scoreChanged() {
+        scoreLabel.text = "SCORE: \(GameScene.score)"
+    }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        guard dna.mutations < maxMutations else { return }
-        
+                
         var base: Nucleobase? = nil
         
         if let touch = touches.first {
@@ -142,13 +128,8 @@ class GameScene: SKScene {
             }
         }
         
-        if let newBase = base {
-            if dna.addTop(with: newBase) {
-                GameScene.score += 1
-            }
-            scoreLabel.text = "SCORE: \(GameScene.score)"
-            mutationLabel.text = "MUTATIONS: \(self.dna.mutations)"
-
+        if let base = base {
+            dna.addNucleotide(with: base)
         }
     }
     

@@ -11,45 +11,52 @@ import SpriteKit
 
 
 class DNA: SKNode {
-    public var nucleotides = [Nucleotide]()
-   
-    private var count = 0
-    
-    private var numNucleotides = 0
+    private let size: CGSize
+    private let time = 0.5
+    public let maxMutations = 5
+    private var nodeWidth:CGFloat?
+    public var numNucleotides = 0
 
-    private var time = 0.5
-    
-    private var size: CGSize?
+    public var nucleotides = [Nucleotide]()
+    public var mutations = 0 {
+        didSet {
+            let scene = self.scene as! GameScene
+            scene.mutationsChanged()
+        }
+    }
     
     init(size: CGSize) {
-        
+        self.size = size
+
         super.init()
         
-        self.size = size
-        
+
         //the scale ratio needed to make a nucleotide fit the vertical space
-        let scale = size.height / Nucleotide.size.height
+        let scale = size.height / Nucleotide.size.height / 2
         
         setScale(scale)
         
         //the width of a nucleotide with the scale applied
-        let width = Nucleotide.size.width * scale
+        nodeWidth = Nucleotide.size.width * scale
         
         //the amount of scaled nucleotides needed to fit the horizontal space
-        let count = Int(size.width / width) + 1
+        let count = Int(size.width / nodeWidth!) + 1
         
         for _ in 0...count {
             addRight()
         }
         
         let moveAction = moveToPosition()
+        let firstAction = SKAction.run(fade)
         let scrollAction = SKAction.repeatForever(scroll())
-        run(SKAction.sequence([moveAction, scrollAction]))
+        run(SKAction.sequence([moveAction, firstAction, scrollAction]))
     }
     
     public func moveToPosition() -> SKAction {
-        let displacement = nucleotides.first!.position.x - Nucleotide.size.width
-        return SKAction.move(by: CGVector(dx: displacement, dy: 0), duration: time * Double(displacement) / Double(Nucleotide.size.width))
+        let distance = size.width - nodeWidth!
+        let time = self.time * Double(distance) / Double(nodeWidth!)
+        print("displacement: \(distance) time: \(time)")
+        return SKAction.move(by: CGVector(dx: -distance, dy: 0), duration: time)
     }
     
     private func addRight() {
@@ -62,7 +69,55 @@ class DNA: SKNode {
     }
     
     public func scroll() -> SKAction {
-        return SKAction.move(by: CGVector(dx: Nucleotide.size.width, dy: 0), duration: time)
+        
+        let move = SKAction.move(by: CGVector(dx: -(nodeWidth!), dy: 0), duration: 0.5)
+        
+        let add = SKAction.run {
+            self.addRight()
+            
+            let first = self.nucleotides.removeFirst()
+            first.pair?.removeFromParent()
+            first.removeFromParent()
+            
+            self.fade()
+            
+        }
+        
+        return SKAction.sequence([move, add])
+    }
+    
+    private func fade() {
+        let first = self.nucleotides[0]
+        first.run(SKAction.fadeOut(withDuration: 0.5))
+        first.pair?.run(SKAction.fadeOut(withDuration: 0.5))
+        
+        if first.pair == nil {
+            self.addNucleotide(with: nil)
+            mutations += 1
+        }
+    }
+    
+    public func addNucleotide(with base: Nucleobase?) {
+        for node in nucleotides {
+            if node.pair == nil {
+                let mutated = !node.base!.canPair(with: base)
+ 
+                let pair = Nucleotide(base: base, mutated: mutated, alignment: .left)
+                pair.position.x = node.position.x
+                addChild(pair)
+                
+                node.pair = pair
+                
+                if mutated {
+                    mutations += 1
+                } else {
+                    GameScene.score += 1
+                    let scene = self.scene as! GameScene
+                    scene.scoreChanged()
+                }
+                return
+            }
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
